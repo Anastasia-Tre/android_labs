@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">lab1</string>
+    <string name="choose_font">Choose font</string>
+    <string name="sans_serif">sans-serif</string>
+    <string name="casual">casual</string>
+    <string name="cursive">cursive</string>
+    <string name="enter_text">Enter text</string>
+    <string name="result">Result</string>
+    <string name="your_text">Your text:</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>
