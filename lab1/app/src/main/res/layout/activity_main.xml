@@ -120,6 +120,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:text=""
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lbl_tv_result" />
