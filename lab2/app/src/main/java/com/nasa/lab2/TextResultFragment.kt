@@ -20,7 +20,7 @@ class TextResultFragment : Fragment() {
     fun setTextResult(text: String, font: String) {
         val tv_result = requireView().findViewById<TextView>(R.id.tv_result)
         tv_result.typeface = Typeface.create(font, Typeface.NORMAL)
-        tv_result.text = text + font
+        tv_result.text = text
     }
 
 }
