@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fontChoiceFragment"
-        android:name="com.nasa.lab2.FontSelectFragment"
+        android:name="com.nasa.lab3.FontSelectFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/textResultFragment"
@@ -18,7 +18,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/textResultFragment"
-        android:name="com.nasa.lab2.TextResultFragment"
+        android:name="com.nasa.lab3.TextResultFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
