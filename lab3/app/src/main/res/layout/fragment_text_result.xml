@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context=".TextResultFragment">
+    tools:context=".fragments.TextResultFragment">
 
     <TextView
         android:id="@+id/lbl_tv_result"
