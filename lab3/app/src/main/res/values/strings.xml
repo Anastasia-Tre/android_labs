@@ -10,4 +10,5 @@
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="open">Open</string>
+    <string name="data">Data</string>
 </resources>

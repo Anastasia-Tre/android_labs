@@ -15,8 +15,7 @@ class ShowDataActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_data)
         val data = intent.getParcelableArrayListExtra<Text>("data")
 
-        var table = findViewById<TableLayout>(R.id.table)
-
+        val table = findViewById<TableLayout>(R.id.table)
         for (item in data!!) {
             val row = TableRow(this)
             row.addView(createTextView(item.text))
@@ -30,5 +29,4 @@ class ShowDataActivity : AppCompatActivity() {
         text.text = string
         return text
     }
-
 }

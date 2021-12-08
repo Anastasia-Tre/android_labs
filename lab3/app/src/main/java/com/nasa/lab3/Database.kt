@@ -36,9 +36,41 @@ class Database(context: Context) :
         db.close()
     }
 
-    fun getData(): Cursor? {
+    private fun getData(): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
+        return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+    }
+
+    fun getArrayListOfText(): ArrayList<Text> {
+        val array = arrayListOf<Text>()
+        val cursor = getData()
+        if (cursor!!.moveToFirst()) {
+            val colStringIndex = cursor.getColumnIndexOrThrow(COLUMN_STRING)
+            val colFontIndex = cursor.getColumnIndexOrThrow(COLUMN_FONT)
+
+            array.add(
+                Text(
+                    cursor.getString(colStringIndex),
+                    cursor.getString(colFontIndex)
+                )
+            )
+
+            while (cursor.moveToNext()) {
+                array.add(
+                    Text(
+                        cursor.getString(colStringIndex),
+                        cursor.getString(colFontIndex)
+                    )
+                )
+            }
+        } else {
+            array.add(
+                Text("no data", "")
+            )
+        }
+
+        cursor.close()
+        return array
     }
 
     companion object {
