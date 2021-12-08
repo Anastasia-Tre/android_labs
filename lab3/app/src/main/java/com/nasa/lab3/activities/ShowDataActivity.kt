@@ -26,7 +26,6 @@ class ShowDataActivity : AppCompatActivity() {
     }
 
     private fun createTextView(string: String): TextView {
-
         val text = TextView(this)
         text.text = string
         return text

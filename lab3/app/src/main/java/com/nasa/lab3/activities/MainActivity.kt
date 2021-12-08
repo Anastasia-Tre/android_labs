@@ -44,23 +44,28 @@ class MainActivity : AppCompatActivity(), FontSelectFragment.OnFontSelectedListe
     fun GetText(): ArrayList<Text> {
         val array = arrayListOf<Text>()
         val cursor = db.getData()
-        cursor!!.moveToFirst()
-        val colStringIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_STRING)
-        val colFontIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_FONT)
+        if (cursor!!.moveToFirst()) {
+            val colStringIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_STRING)
+            val colFontIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_FONT)
 
-        array.add(
-            Text(
-                cursor.getString(colStringIndex),
-                cursor.getString(colFontIndex)
-            )
-        )
-
-        while (cursor.moveToNext()) {
             array.add(
                 Text(
                     cursor.getString(colStringIndex),
                     cursor.getString(colFontIndex)
                 )
+            )
+
+            while (cursor.moveToNext()) {
+                array.add(
+                    Text(
+                        cursor.getString(colStringIndex),
+                        cursor.getString(colFontIndex)
+                    )
+                )
+            }
+        } else {
+            array.add(
+                Text("no data", "")
             )
         }
 
@@ -68,29 +73,6 @@ class MainActivity : AppCompatActivity(), FontSelectFragment.OnFontSelectedListe
         return array
     }
 
-    fun GetAllDataFromDB(): ArrayList<Array<String>> {
-        val data = arrayListOf<Array<String>>()
 
-        val cursor = db.getData()
-        cursor!!.moveToFirst()
-        val colStringIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_STRING)
-        val colFontIndex = cursor.getColumnIndexOrThrow(Database.COLUMN_FONT)
-        var array = arrayOf<String>(
-            cursor.getString(colStringIndex),
-            cursor.getString(colFontIndex)
-        )
-        data.add(array)
-
-        while (cursor.moveToNext()) {
-            array = arrayOf<String>(
-                cursor.getString(colStringIndex),
-                cursor.getString(colFontIndex)
-            )
-            data.add(array)
-        }
-
-        cursor.close()
-        return data
-    }
 
 }

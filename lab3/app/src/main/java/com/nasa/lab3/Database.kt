@@ -27,10 +27,6 @@ class Database(context: Context) :
         onCreate(db)
     }
 
-    override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        onUpgrade(db, oldVersion, newVersion)
-    }
-
     fun addData(string: String, font: String) {
         val values = ContentValues()
         values.put(COLUMN_STRING, string)
