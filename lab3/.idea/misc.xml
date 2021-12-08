@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/kotlin/android_labs/lab3/app/src/main/res/layout/activity_main.xml" value="0.2484375" />
+        <entry key="..\:/kotlin/android_labs/lab3/app/src/main/res/layout/activity_show_data.xml" value="0.2526041666666667" />
         <entry key="..\:/kotlin/android_labs/lab3/app/src/main/res/layout/fragment_font_select.xml" value="0.12864583333333332" />
+        <entry key="..\:/kotlin/android_labs/lab3/app/src/main/res/layout/fragment_open_data.xml" value="0.2526041666666667" />
       </map>
     </option>
   </component>
