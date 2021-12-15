@@ -75,7 +75,7 @@ class Database(context: Context) :
 
     companion object {
         const val DATABASE_VERSION = 1
-        const val DATABASE_NAME = "FeedReader.db"
+        const val DATABASE_NAME = "Data.db"
         const val TABLE_NAME = "data"
         const val COLUMN_STRING = "string"
         const val COLUMN_FONT = "font"
