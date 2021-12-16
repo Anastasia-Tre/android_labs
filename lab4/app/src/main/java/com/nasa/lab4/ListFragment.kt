@@ -26,7 +26,7 @@ class ListFragment : Fragment() {
         //text.text = getAudioFiles()
 
 
-        val list = getEmptyList()
+        val list = getAudioFiles()
 
         val audioList = view.findViewById<RecyclerView>(R.id.audio_list)
         audioList.layoutManager = LinearLayoutManager(view.context)
@@ -34,13 +34,10 @@ class ListFragment : Fragment() {
         return view
     }
 
-    fun getAudioFiles(): String {
-        var text = ""
-
+    fun getAudioFiles(): ArrayList<AudioFile> {
         val audioList = arrayListOf<AudioFile>()
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val cursor = context?.contentResolver?.query(uri, null, null, null, null)
-        //looping through all rows and adding to list
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 val title = cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)))
@@ -48,19 +45,23 @@ class ListFragment : Fragment() {
                     cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)))
                 val duration =
                     cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)))
-                //val url = cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.DATA)))
-                val modelAudio = AudioFile()
+                val uri =
+                    cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_RESOURCE_URI)))
+                val audioFile = AudioFile()
+                audioFile.title = title
+                audioFile.artist = artist
+                audioFile.duration = duration
+                //audioFile.uri = Uri.parse(uri)
 
-                audioList.add(modelAudio)
-                text += (title + "\n")
+                audioList.add(audioFile)
             } while (cursor.moveToNext())
         }
 
-        return text
+        return audioList
 
     }
 
-    fun getEmptyList(): ArrayList<AudioFile> {
+    private fun getEmptyList(): ArrayList<AudioFile> {
         val audioList = arrayListOf<AudioFile>()
         var i = 0
         while (i < 20) {

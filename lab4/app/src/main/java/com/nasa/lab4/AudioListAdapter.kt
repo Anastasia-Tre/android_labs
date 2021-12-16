@@ -1,6 +1,5 @@
 package com.nasa.lab4
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,7 @@ class AudioListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.audio_list, parent, false)
+            .inflate(R.layout.audio_list_item, parent, false)
         return ViewHolder(view, onClick)
     }
 
