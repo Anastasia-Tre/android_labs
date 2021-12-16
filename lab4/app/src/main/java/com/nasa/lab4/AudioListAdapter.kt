@@ -20,7 +20,6 @@ class AudioListAdapter(
         private var currentAudio: AudioFile? = null
 
         init {
-            Log.v("Audio", "in ViewHolder")
             view.setOnClickListener {
                 currentAudio?.let {
                     onClick(it)
@@ -30,7 +29,6 @@ class AudioListAdapter(
 
         fun bind(audio: AudioFile) {
             currentAudio = audio
-            Log.v("Audio", "in bind")
             title.text = audio.title
             artist.text = audio.artist
         }
@@ -38,7 +36,6 @@ class AudioListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.v("Audio", "in onCreateViewHolder")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.audio_list, parent, false)
         return ViewHolder(view, onClick)

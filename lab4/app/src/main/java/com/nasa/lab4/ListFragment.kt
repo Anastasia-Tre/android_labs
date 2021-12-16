@@ -31,7 +31,6 @@ class ListFragment : Fragment() {
         val audioList = view.findViewById<RecyclerView>(R.id.audio_list)
         audioList.layoutManager = LinearLayoutManager(view.context)
         audioList.adapter = AudioListAdapter(list) { audio -> adapterOnClick(audio) }
-        Log.v("Audio", "in Fragment")
         return view
     }
 
