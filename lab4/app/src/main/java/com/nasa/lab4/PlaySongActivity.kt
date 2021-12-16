@@ -11,6 +11,7 @@ import android.os.Message
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 
 class PlaySongActivity : AppCompatActivity() {
 
@@ -21,7 +22,9 @@ class PlaySongActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val uri: Uri = Uri.parse(intent.getStringExtra("uri"))
+        val string = intent.getStringExtra("uri").toString()
+        val uri: Uri = Uri.parse(string)
+        Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
         mp = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -39,66 +42,12 @@ class PlaySongActivity : AppCompatActivity() {
         totalTime = mp.duration
 
 
-        val playBtn = findViewById<Button>(R.id.playBtn)
-        playBtn.setOnClickListener {
-            if (mp.isPlaying) {
-                //Stop
-                mp.pause()
-                it.setBackgroundResource(R.drawable.play)
-            } else {
-                //Start
-                mp.start()
-                it.setBackgroundResource(R.drawable.stop)
-            }
-        }
+        setPlayBtn()
+        setPositionBar()
+        setVolumeBar()
 
-        // Volume Bar
-        val volumeBar = findViewById<SeekBar>(R.id.volumeBar)
-        volumeBar.setOnSeekBarChangeListener(
-            object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    if (fromUser) {
-                        val volumeNum = progress / 100.0f
-                        mp.setVolume(volumeNum, volumeNum)
-                    }
-                }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            }
-        )
-
-        // PositionBar
-        val positionBar = findViewById<SeekBar>(R.id.positionBar)
-        positionBar.max = totalTime
-        positionBar.setOnSeekBarChangeListener(
-            object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    if (fromUser) {
-                        mp.seekTo(progress)
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            }
-        )
-
-        // Thread
+        //Thread
         Thread(Runnable {
             while (true) {
                 try {
@@ -142,6 +91,71 @@ class PlaySongActivity : AppCompatActivity() {
         timeLabel += sec
 
         return timeLabel
+    }
+
+    fun setVolumeBar() {
+        // Volume Bar
+        val volumeBar = findViewById<SeekBar>(R.id.volumeBar)
+        volumeBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        val volumeNum = progress / 100.0f
+                        mp.setVolume(volumeNum, volumeNum)
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
+            }
+        )
+    }
+
+    fun setPositionBar() {
+        // PositionBar
+        val positionBar = findViewById<SeekBar>(R.id.positionBar)
+        positionBar.max = totalTime
+        positionBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        mp.seekTo(progress)
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
+            }
+        )
+    }
+
+    fun setPlayBtn() {
+        val playBtn = findViewById<Button>(R.id.playBtn)
+        playBtn.setOnClickListener {
+            if (mp.isPlaying) {
+                //Stop
+                mp.pause()
+                it.setBackgroundResource(R.drawable.play)
+            } else {
+                //Start
+                mp.start()
+                it.setBackgroundResource(R.drawable.stop)
+            }
+        }
     }
 
 }

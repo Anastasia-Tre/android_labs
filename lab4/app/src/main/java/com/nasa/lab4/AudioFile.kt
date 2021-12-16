@@ -2,12 +2,9 @@ package com.nasa.lab4
 
 import android.net.Uri
 
-class AudioFile {
-
-    var title: String? = null
-    var duration: String? = null
-    var artist: String? = null
-    var uri: Uri? = null
-
-
-}
+data class AudioFile(
+    val title: String,
+    val artist: String,
+    val duration: Int,
+    val uri: Uri
+)
