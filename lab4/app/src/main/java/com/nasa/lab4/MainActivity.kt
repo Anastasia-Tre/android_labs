@@ -1,7 +1,6 @@
 package com.nasa.lab4
 
 import android.Manifest
-import android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -20,9 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (checkPermission()) {
-            startAudioListFragment()
-        }
+        checkAndRequestForPermission()
+        startAudioListFragment()
 
     }
 
@@ -34,39 +32,29 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun checkPermission(): Boolean {
-        val READ_EXTERNAL_PERMISSION =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        if (READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                PERMISSION_READ
-            )
-            return false
-        }
-        return true
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSION_READ -> {
-                if (grantResults.size > 0 && permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE) {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Please allow storage permission",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        startAudioListFragment()
-                    }
-                }
+    private fun checkAndRequestForPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this@MainActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Please accept for required permission",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this@MainActivity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    1
+                )
             }
         }
     }

@@ -20,7 +20,7 @@ class PlaySongActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_play_song)
 
         val string = intent.getStringExtra("uri").toString()
         val uri: Uri = Uri.parse(string)
