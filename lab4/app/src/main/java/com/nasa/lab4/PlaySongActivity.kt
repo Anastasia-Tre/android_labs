@@ -9,10 +9,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import java.io.IOException
+import java.lang.IllegalStateException
+import java.util.jar.Manifest
+import android.os.Environment
+import java.io.File
+
 
 class PlaySongActivity : AppCompatActivity() {
 
@@ -25,22 +33,29 @@ class PlaySongActivity : AppCompatActivity() {
 
         val audioFile = intent.getParcelableExtra<AudioFile>("audioFile")
         val title = findViewById<TextView>(R.id.title)
-        title.text = audioFile!!.title
-        val artist = findViewById<TextView>(R.id.artist)
-        artist.text = audioFile.artist
+        title.text = audioFile!!.displayName
 
-        /*mp = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-            setDataSource(applicationContext, uri)
-            prepare()
-            start()
-        }*/
-        mp = MediaPlayer.create(this, R.raw.music)
+
+        try {
+            mp = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                reset()
+                setDataSource(applicationContext, audioFile.uri)
+                prepare()
+                // setOnPreparedListener()
+                start()
+            }
+        } catch (err: IOException) {
+            Log.i("Lab4App", "IOException")
+            err.printStackTrace()
+        }
+
+        //mp = MediaPlayer.create(this, R.raw.music)
         mp.isLooping = true
         mp.setVolume(0.5f, 0.5f)
         totalTime = mp.duration
@@ -64,6 +79,7 @@ class PlaySongActivity : AppCompatActivity() {
             }
         }).start()
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

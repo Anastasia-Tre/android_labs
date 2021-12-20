@@ -3,6 +3,7 @@ package com.nasa.lab4
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.provider.MediaStore
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -32,32 +34,29 @@ class ListFragment : Fragment() {
 
     private fun getAudioFiles(): ArrayList<AudioFile> {
         val audioList = arrayListOf<AudioFile>()
-        /*val collection =
+        val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 MediaStore.Audio.Media.getContentUri(
                     MediaStore.VOLUME_EXTERNAL
                 )
             } else {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }*/
-
-        val collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.DISPLAY_NAME,
         )
-
-        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
 
         val query = context?.contentResolver?.query(
             collection,
             projection,
             null,
             null,
-            sortOrder
+            null
         )
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
@@ -68,32 +67,34 @@ class ListFragment : Fragment() {
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
 
+            val column = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
                 val title = cursor.getString(titleColumn)
                 val artist = cursor.getString(artistColumn)
                 val duration = cursor.getInt(durationColumn)
 
+                val name = cursor.getString(column)
+                Log.i("Lab4App", name)
+
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     id
                 )
-
-                audioList += AudioFile(title, artist, duration, contentUri)
+                Log.i("Lab4App", "click")
+                audioList += AudioFile(title, artist, name, duration, contentUri)
             }
         }
 
-
-
         return audioList
-
     }
 
     private fun adapterOnClick(audio: AudioFile) {
+        Log.i("Lab4App", "click")
         val intent = Intent(this.context, PlaySongActivity()::class.java)
         intent.putExtra("audioFile", audio)
         startActivity(intent)
     }
-
 
 }

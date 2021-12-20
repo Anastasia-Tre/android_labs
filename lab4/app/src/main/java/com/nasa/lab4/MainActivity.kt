@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 
 import android.content.pm.PackageManager
+import android.util.Log
 
 import androidx.core.app.ActivityCompat
 
