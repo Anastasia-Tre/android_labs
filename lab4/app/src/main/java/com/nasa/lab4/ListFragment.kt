@@ -1,9 +1,7 @@
 package com.nasa.lab4
 
-import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.provider.MediaStore
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -76,13 +73,11 @@ class ListFragment : Fragment() {
                 val duration = cursor.getInt(durationColumn)
 
                 val name = cursor.getString(column)
-                Log.i("Lab4App", name)
 
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     id
                 )
-                Log.i("Lab4App", "click")
                 audioList += AudioFile(title, artist, name, duration, contentUri)
             }
         }
@@ -91,7 +86,6 @@ class ListFragment : Fragment() {
     }
 
     private fun adapterOnClick(audio: AudioFile) {
-        Log.i("Lab4App", "click")
         val intent = Intent(this.context, PlaySongActivity()::class.java)
         intent.putExtra("audioFile", audio)
         startActivity(intent)

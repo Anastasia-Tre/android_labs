@@ -4,12 +4,8 @@ import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-
 import android.content.pm.PackageManager
-import android.util.Log
-
 import androidx.core.app.ActivityCompat
-
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit

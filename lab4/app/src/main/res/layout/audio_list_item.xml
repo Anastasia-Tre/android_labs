@@ -16,6 +16,7 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:contentDescription="@string/image"
             android:src="@drawable/ic_baseline_audiotrack_24" />
 
         <TextView
@@ -26,7 +27,6 @@
             android:layout_marginTop="15dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Title"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -38,7 +38,6 @@
             android:layout_marginTop="40dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Artist"
             android:textColor="@color/black"
             android:textSize="14sp" />
     </RelativeLayout>

@@ -15,10 +15,10 @@ class PlaySongActivity : AppCompatActivity() {
     private lateinit var mp: MediaPlayer
     private val mHandler = Handler()
 
-    lateinit var positionBar: SeekBar
-    lateinit var elapsedTimeLabel: TextView
-    lateinit var remainingTimeLabel: TextView
-    lateinit var playBtn: Button
+    private lateinit var positionBar: SeekBar
+    private lateinit var elapsedTimeLabel: TextView
+    private lateinit var remainingTimeLabel: TextView
+    private lateinit var playBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,6 @@ class PlaySongActivity : AppCompatActivity() {
         }
 
         setUIElements()
-
     }
 
     private fun setUIElements() {
@@ -65,7 +64,7 @@ class PlaySongActivity : AppCompatActivity() {
     }
 
     private fun updatePositionBar() {
-        mHandler.postDelayed(mUpdatePositionBar, 100);
+        mHandler.postDelayed(mUpdatePositionBar, 100)
     }
 
     private val mUpdatePositionBar: Runnable = object : Runnable {
@@ -81,11 +80,10 @@ class PlaySongActivity : AppCompatActivity() {
     }
 
     fun createTimeLabel(time: Int): String {
-        var timeLabel = ""
         val min = time / 1000 / 60
         val sec = time / 1000 % 60
 
-        timeLabel = "$min:"
+        var timeLabel = "$min:"
         if (sec < 10) timeLabel += "0"
         timeLabel += sec
 

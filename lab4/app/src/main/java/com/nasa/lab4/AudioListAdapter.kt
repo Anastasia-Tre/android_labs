@@ -14,8 +14,8 @@ class AudioListAdapter(
 
     class ViewHolder(view: View, val onClick: (AudioFile) -> Unit) :
         RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.title)
-        val artist: TextView = view.findViewById(R.id.artist)
+        private val title: TextView = view.findViewById(R.id.title)
+        private val artist: TextView = view.findViewById(R.id.artist)
         private var currentAudio: AudioFile? = null
 
         init {
