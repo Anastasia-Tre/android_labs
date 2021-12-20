@@ -32,14 +32,16 @@ class ListFragment : Fragment() {
 
     private fun getAudioFiles(): ArrayList<AudioFile> {
         val audioList = arrayListOf<AudioFile>()
-        val collection =
+        /*val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 MediaStore.Audio.Media.getContentUri(
                     MediaStore.VOLUME_EXTERNAL
                 )
             } else {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
+            }*/
+
+        val collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
@@ -90,6 +92,7 @@ class ListFragment : Fragment() {
     private fun adapterOnClick(audio: AudioFile) {
         val intent = Intent(this.context, PlaySongActivity()::class.java)
         intent.putExtra("uri", audio.uri.toString())
+        intent.putExtra("audioFile", audio)
         startActivity(intent)
         //Toast.makeText(context, audio.uri.toString(), Toast.LENGTH_SHORT).show()
     }

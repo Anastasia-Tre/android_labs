@@ -1,10 +1,13 @@
 package com.nasa.lab4
 
 import android.net.Uri
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class AudioFile(
     val title: String,
     val artist: String,
     val duration: Int,
     val uri: Uri
-)
+) : Parcelable

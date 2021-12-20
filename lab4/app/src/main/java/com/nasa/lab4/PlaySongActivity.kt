@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
@@ -25,7 +26,10 @@ class PlaySongActivity : AppCompatActivity() {
         val string = intent.getStringExtra("uri").toString()
         val uri: Uri = Uri.parse(string)
         Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
-        mp = MediaPlayer().apply {
+        val audioFile = intent.getParcelableExtra<AudioFile>("audioFile")
+
+
+        /*mp = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -35,8 +39,8 @@ class PlaySongActivity : AppCompatActivity() {
             setDataSource(applicationContext, uri)
             prepare()
             start()
-        }
-        //mp = MediaPlayer.create(this, R.raw.music)
+        }*/
+        mp = MediaPlayer.create(this, R.raw.music)
         mp.isLooping = true
         mp.setVolume(0.5f, 0.5f)
         totalTime = mp.duration
