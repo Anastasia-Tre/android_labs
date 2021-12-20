@@ -1,31 +1,24 @@
 package com.nasa.lab4
 
-import android.annotation.SuppressLint
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
-import android.provider.MediaStore
-import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import java.io.IOException
-import java.lang.IllegalStateException
-import java.util.jar.Manifest
-import android.os.Environment
-import java.io.File
 
 
 class PlaySongActivity : AppCompatActivity() {
 
     private lateinit var mp: MediaPlayer
-    private var totalTime: Int = 0
+    private val mHandler = Handler()
+
+    lateinit var positionBar: SeekBar
+    lateinit var elapsedTimeLabel: TextView
+    lateinit var remainingTimeLabel: TextView
+    lateinit var playBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,75 +28,55 @@ class PlaySongActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.title)
         title.text = audioFile!!.displayName
 
-
-        try {
-            mp = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-                )
-                reset()
-                setDataSource(applicationContext, audioFile.uri)
-                prepare()
-                // setOnPreparedListener()
-                start()
-            }
-        } catch (err: IOException) {
-            Log.i("Lab4App", "IOException")
-            err.printStackTrace()
+        mp = MediaPlayer().apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+            reset()
+            setDataSource(applicationContext, audioFile.uri)
+            prepare()
+            start()
+            setVolume(0.5f, 0.5f)
+            isLooping = true
         }
 
-        //mp = MediaPlayer.create(this, R.raw.music)
-        mp.isLooping = true
-        mp.setVolume(0.5f, 0.5f)
-        totalTime = mp.duration
+        setUIElements()
 
+    }
+
+    private fun setUIElements() {
+        positionBar = findViewById(R.id.positionBar)
+        elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel)
+        remainingTimeLabel = findViewById(R.id.remainingTimeLabel)
+        playBtn = findViewById(R.id.playBtn)
 
         setPlayBtn()
         setPositionBar()
         setVolumeBar()
-
-
-        //Thread
-        Thread(Runnable {
-            while (true) {
-                try {
-                    val msg = Message()
-                    msg.what = mp.currentPosition
-                    handler.sendMessage(msg)
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                }
-            }
-        }).start()
+        updatePositionBar()
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
         mp.stop()
-        this.finish()
     }
 
-    @SuppressLint("HandlerLeak")
-    var handler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            val currentPosition = msg.what
+    private fun updatePositionBar() {
+        mHandler.postDelayed(mUpdatePositionBar, 100);
+    }
 
-            // Update positionBar
-            val positionBar = findViewById<SeekBar>(R.id.positionBar)
+    private val mUpdatePositionBar: Runnable = object : Runnable {
+        override fun run() {
+            val currentPosition = mp.currentPosition
             positionBar.progress = currentPosition
-
-            // Update Labels
-            val elapsedTimeLabel = findViewById<TextView>(R.id.elapsedTimeLabel)
-            val elapsedTime = createTimeLabel(currentPosition)
-            elapsedTimeLabel.text = elapsedTime
-
-            val remainingTimeLabel = findViewById<TextView>(R.id.remainingTimeLabel)
-            val remainingTime = createTimeLabel(totalTime - currentPosition)
+            elapsedTimeLabel.text = createTimeLabel(currentPosition)
+            val remainingTime = createTimeLabel(mp.duration - currentPosition)
             remainingTimeLabel.text = "-$remainingTime"
+
+            mHandler.postDelayed(this, 100)
         }
     }
 
@@ -120,7 +93,6 @@ class PlaySongActivity : AppCompatActivity() {
     }
 
     private fun setVolumeBar() {
-        // Volume Bar
         val volumeBar = findViewById<SeekBar>(R.id.volumeBar)
         volumeBar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
@@ -145,9 +117,7 @@ class PlaySongActivity : AppCompatActivity() {
     }
 
     private fun setPositionBar() {
-        // PositionBar
-        val positionBar = findViewById<SeekBar>(R.id.positionBar)
-        positionBar.max = totalTime
+        positionBar.max = mp.duration
         positionBar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -170,14 +140,11 @@ class PlaySongActivity : AppCompatActivity() {
     }
 
     private fun setPlayBtn() {
-        val playBtn = findViewById<Button>(R.id.playBtn)
         playBtn.setOnClickListener {
             if (mp.isPlaying) {
-                //Stop
                 mp.pause()
                 it.setBackgroundResource(R.drawable.play)
             } else {
-                //Start
                 mp.start()
                 it.setBackgroundResource(R.drawable.stop)
             }
