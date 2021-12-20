@@ -28,6 +28,10 @@ class PlaySongActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
         val audioFile = intent.getParcelableExtra<AudioFile>("audioFile")
 
+        val title = findViewById<TextView>(R.id.title)
+        title.text = audioFile!!.title
+        val artist = findViewById<TextView>(R.id.artist)
+        artist.text = audioFile.artist
 
         /*mp = MediaPlayer().apply {
             setAudioAttributes(
