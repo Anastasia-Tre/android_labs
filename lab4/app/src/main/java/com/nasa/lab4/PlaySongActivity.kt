@@ -23,11 +23,7 @@ class PlaySongActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_song)
 
-        val string = intent.getStringExtra("uri").toString()
-        val uri: Uri = Uri.parse(string)
-        Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
         val audioFile = intent.getParcelableExtra<AudioFile>("audioFile")
-
         val title = findViewById<TextView>(R.id.title)
         title.text = audioFile!!.title
         val artist = findViewById<TextView>(R.id.artist)
@@ -69,6 +65,12 @@ class PlaySongActivity : AppCompatActivity() {
         }).start()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        mp.stop()
+        this.finish()
+    }
+
     @SuppressLint("HandlerLeak")
     var handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -101,7 +103,7 @@ class PlaySongActivity : AppCompatActivity() {
         return timeLabel
     }
 
-    fun setVolumeBar() {
+    private fun setVolumeBar() {
         // Volume Bar
         val volumeBar = findViewById<SeekBar>(R.id.volumeBar)
         volumeBar.setOnSeekBarChangeListener(
@@ -126,7 +128,7 @@ class PlaySongActivity : AppCompatActivity() {
         )
     }
 
-    fun setPositionBar() {
+    private fun setPositionBar() {
         // PositionBar
         val positionBar = findViewById<SeekBar>(R.id.positionBar)
         positionBar.max = totalTime
@@ -151,7 +153,7 @@ class PlaySongActivity : AppCompatActivity() {
         )
     }
 
-    fun setPlayBtn() {
+    private fun setPlayBtn() {
         val playBtn = findViewById<Button>(R.id.playBtn)
         playBtn.setOnClickListener {
             if (mp.isPlaying) {

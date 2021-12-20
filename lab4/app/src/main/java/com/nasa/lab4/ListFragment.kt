@@ -91,10 +91,8 @@ class ListFragment : Fragment() {
 
     private fun adapterOnClick(audio: AudioFile) {
         val intent = Intent(this.context, PlaySongActivity()::class.java)
-        intent.putExtra("uri", audio.uri.toString())
         intent.putExtra("audioFile", audio)
         startActivity(intent)
-        //Toast.makeText(context, audio.uri.toString(), Toast.LENGTH_SHORT).show()
     }
 
 
